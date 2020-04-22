@@ -9,8 +9,8 @@
 //@Configuration
 //public class ServiceConfig {
 //
-//	@Bean
+//	@Bean(initMethod="init", destroyMethod="destroy")
 //	public AtivacaoClienteService ativacaoClienteService(Notificador notificador) {
-//		return new AtivacaoClienteService(notificador);
+//		return new AtivacaoClienteService();
 //	}
 //}
