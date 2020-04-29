@@ -1,7 +1,7 @@
 # algafood-api
-Curso Especialista Spring Rest
+Curso Especialista Spring REST
 
-Progeto referente ao curso Especialista Spring Rest, oferecido pela AlgaWorks.
+Progeto referente ao curso Especialista Spring REST, oferecido pela AlgaWorks.
 
 Conteudo visto no curso
 
