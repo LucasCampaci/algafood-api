@@ -8,17 +8,20 @@ import javax.transaction.Transactional;
 
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CozinhaRepositoryImpl implements CozinhaRepository {
 
 	@PersistenceContext
 	private EntityManager manager;
-	
+
 	@Override
 	public List<Cozinha> listar() {
-		return manager.createQuery("from Cozinha", Cozinha.class).getResultList();
+		return manager.createQuery("from Cozinha", Cozinha.class)
+				.getResultList();
 	}
-	
+
 	@Override
 	public Cozinha buscar(Long id) {
 		return manager.find(Cozinha.class, id);
@@ -36,5 +39,4 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 		cozinha = buscar(cozinha.getId());
 		manager.remove(cozinha);
 	}
-
 }
