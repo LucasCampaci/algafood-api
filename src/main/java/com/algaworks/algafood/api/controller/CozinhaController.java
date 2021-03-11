@@ -45,8 +45,9 @@ public class CozinhaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
-        return cadastroCozinhaService.salvar(cozinha);
+    public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
+        Cozinha cozinhaResp = cadastroCozinhaService.salvar(cozinha);
+        return ResponseEntity.ok(cozinhaResp);
     }
 
     @PutMapping("/{cozinhaId}")
@@ -55,8 +56,8 @@ public class CozinhaController {
 
         if (cozinha != null) {
             BeanUtils.copyProperties(cozinhaRQ, cozinha, "id");
-            Cozinha salvarResp = cadastroCozinhaService.salvar(cozinha);
-            return ResponseEntity.ok(salvarResp);
+            Cozinha cozinhaResp = cadastroCozinhaService.salvar(cozinha);
+            return ResponseEntity.ok(cozinhaResp);
         }
         return ResponseEntity.notFound().build();
     }
@@ -68,7 +69,6 @@ public class CozinhaController {
             return ResponseEntity.noContent().build();
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
-
         } catch (EntidadeEmUsoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
