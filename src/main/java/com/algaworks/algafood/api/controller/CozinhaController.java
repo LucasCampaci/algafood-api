@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/cozinhas")
@@ -34,10 +35,10 @@ public class CozinhaController {
 
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
-        Cozinha cozinha = cadastroCozinhaService.buscar(cozinhaId);
+        Optional<Cozinha> cozinha = cadastroCozinhaService.buscar(cozinhaId);
 
-        if (cozinha != null) {
-            return ResponseEntity.ok(cozinha);
+        if (cozinha.isPresent()) {
+            return ResponseEntity.ok(cozinha.get());
         }
 
         return ResponseEntity.notFound().build();
@@ -52,25 +53,25 @@ public class CozinhaController {
 
     @PutMapping("/{cozinhaId}")
     public  ResponseEntity<Cozinha> alterar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinhaRQ) {
-        Cozinha cozinha = cadastroCozinhaService.buscar(cozinhaId);
+        Optional<Cozinha> cozinhaAtual = cadastroCozinhaService.buscar(cozinhaId);
 
-        if (cozinha != null) {
-            BeanUtils.copyProperties(cozinhaRQ, cozinha, "id");
-            Cozinha cozinhaResp = cadastroCozinhaService.salvar(cozinha);
+        if (cozinhaAtual.isPresent()) {
+            BeanUtils.copyProperties(cozinhaRQ, cozinhaAtual.get(), "id");
+            Cozinha cozinhaResp = cadastroCozinhaService.salvar(cozinhaAtual.get());
             return ResponseEntity.ok(cozinhaResp);
         }
         return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{cozinhaId}")
-    public  ResponseEntity<Cozinha> excluir(@PathVariable Long cozinhaId) {
+    public  ResponseEntity<?> excluir(@PathVariable Long cozinhaId) {
         try {
             cadastroCozinhaService.remover(cozinhaId);
             return ResponseEntity.noContent().build();
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
         } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 }

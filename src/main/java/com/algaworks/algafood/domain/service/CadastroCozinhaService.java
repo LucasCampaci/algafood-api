@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CadastroCozinhaService {
@@ -18,20 +19,20 @@ public class CadastroCozinhaService {
     private CozinhaRepository cozinhaRepository;
 
     public List<Cozinha> listar(){
-        return cozinhaRepository.listar();
+        return cozinhaRepository.findAll();
     }
 
-    public Cozinha buscar(Long cozinhaId){
-        return cozinhaRepository.buscar(cozinhaId);
+    public Optional<Cozinha> buscar(Long cozinhaId){
+        return cozinhaRepository.findById(cozinhaId);
     }
 
     public Cozinha salvar(Cozinha cozinha){
-        return cozinhaRepository.salvar(cozinha);
+        return cozinhaRepository.save(cozinha);
     }
 
     public void remover(Long cozinhaId) {
         try {
-            cozinhaRepository.remover(cozinhaId);
+            cozinhaRepository.deleteById(cozinhaId);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(
                     String.format("Não existe um cadastro de cozinha com código %d", cozinhaId));
