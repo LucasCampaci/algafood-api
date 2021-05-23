@@ -87,11 +87,11 @@ public class RestauranteController {
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
                                           @RequestBody Map<String, Object> campos) {
         Restaurante restauranteAtual = this.cadastroRestauranteService.buscar(restauranteId);
-        if(restauranteAtual == null) {
-            return ResponseEntity.notFound().build();
+        if(restauranteAtual!= null) {
+            merge(campos, restauranteAtual);
+            return alterar(restauranteId,restauranteAtual);
         }
-        merge(campos, restauranteAtual);
-        return alterar(restauranteId,restauranteAtual);
+        return ResponseEntity.notFound().build();
     }
 
     private void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {

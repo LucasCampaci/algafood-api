@@ -7,14 +7,12 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/cozinhas")
@@ -35,10 +33,10 @@ public class CozinhaController {
 
     @GetMapping("/{cozinhaId}")
     public ResponseEntity<Cozinha> buscar(@PathVariable Long cozinhaId) {
-        Optional<Cozinha> cozinha = cadastroCozinhaService.buscar(cozinhaId);
+        Cozinha cozinha = cadastroCozinhaService.buscar(cozinhaId);
 
-        if (cozinha.isPresent()) {
-            return ResponseEntity.ok(cozinha.get());
+        if (cozinha != null) {
+            return ResponseEntity.ok(cozinha);
         }
 
         return ResponseEntity.notFound().build();
@@ -53,11 +51,11 @@ public class CozinhaController {
 
     @PutMapping("/{cozinhaId}")
     public  ResponseEntity<Cozinha> alterar(@PathVariable Long cozinhaId, @RequestBody Cozinha cozinhaRQ) {
-        Optional<Cozinha> cozinhaAtual = cadastroCozinhaService.buscar(cozinhaId);
+        Cozinha cozinhaAtual = cadastroCozinhaService.buscar(cozinhaId);
 
-        if (cozinhaAtual.isPresent()) {
-            BeanUtils.copyProperties(cozinhaRQ, cozinhaAtual.get(), "id");
-            Cozinha cozinhaResp = cadastroCozinhaService.salvar(cozinhaAtual.get());
+        if (cozinhaAtual != null) {
+            BeanUtils.copyProperties(cozinhaRQ, cozinhaAtual, "id");
+            Cozinha cozinhaResp = cadastroCozinhaService.salvar(cozinhaAtual);
             return ResponseEntity.ok(cozinhaResp);
         }
         return ResponseEntity.notFound().build();

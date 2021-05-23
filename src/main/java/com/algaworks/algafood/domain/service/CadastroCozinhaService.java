@@ -22,8 +22,9 @@ public class CadastroCozinhaService {
         return cozinhaRepository.findAll();
     }
 
-    public Optional<Cozinha> buscar(Long cozinhaId){
-        return cozinhaRepository.findById(cozinhaId);
+    public Cozinha buscar(Long cozinhaId){
+        Optional<Cozinha> cozinha = cozinhaRepository.findById(cozinhaId);
+        return cozinha.orElse(null);
     }
 
     public Cozinha salvar(Cozinha cozinha){
