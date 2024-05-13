@@ -11,7 +11,7 @@
 //import java.util.List;
 //
 //@Component
-//public class RestauranteRepositoryImpl implements RestauranteRepository {
+//public class RestauranteRepositoryImpl extends RestauranteRepository {
 //
 //	@PersistenceContext
 //	private EntityManager manager;
